@@ -24,3 +24,4 @@ def rk4(f, t0, tf, y0, h):
         yi.append(y+(1/6)*(k1+2*k2+2*k3+k4))
 
     return np.array(ti), np.array(yi).T
+
