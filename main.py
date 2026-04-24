@@ -4,6 +4,7 @@ from splines_edo_implicite import splines_edo_implicite
 from rk4 import rk4
 import math
 
+
 # c)
 def f(t, y, dy):
     return 2*np.exp(-t)/np.sin(t)*y*dy - 2*np.exp(t)*np.sin(t)
@@ -97,7 +98,7 @@ yrk4p = yrk4[0]
 trk4p = trk4
 
 plt.figure()
-plt.plot(tp, yep, label = 'Solution exact')
+plt.plot(tp, yep, 'o-', label = 'Solution exact')
 plt.plot(tp, Sp, label= 'Spline cubique')
 plt.plot(trk4p, yrk4p, label = 'RK4')
 plt.legend()
