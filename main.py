@@ -85,21 +85,22 @@ trk4, yrk4 = rk4(F, np.pi/4, 3, [np.sqrt(2)/2*np.exp(np.pi/4), np.sqrt(2)*np.exp
 def yexact(t):
     return np.exp(t)*np.sin(t)
 
+# on refait c)
 def S(t):
-    h = (3-np.pi/4)/16
-    i = min(int((t-np.pi/4)/h), 15)
+    h = (3 - np.pi/4)/16
+    i = min(int((t - np.pi/4)//h), 15)
     a, b, c, d = coef[i]
     return a*t**3 + b*t**2 + c*t + d
+t_int = np.linspace(np.pi/4, 3, 16*20)
+S_pasfonction = np.array([S(t) for t in t_int])
+yep = yexact(t_int)
 
-tp = np.linspace(np.pi/4, 3, 200)
-yep = yexact(tp)
-Sp = np.array([S(t) for t in tp])
 yrk4p = yrk4[0]
 trk4p = trk4
 
 plt.figure()
-plt.plot(tp, yep, 'o-', label = 'Solution exact')
-plt.plot(tp, Sp, label= 'Spline cubique')
+plt.plot(t_int, yep, 'o-', label = 'Solution exact')
+plt.plot(t_int, S_pasfonction, label= 'Spline cubique')
 plt.plot(trk4p, yrk4p, label = 'RK4')
 plt.legend()
 plt.title('Exact vs Spline vs RK4')
