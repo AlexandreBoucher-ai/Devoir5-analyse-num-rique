@@ -31,3 +31,42 @@ plt.title('Solutions exacte vs spline cubique')
 plt.xlabel("t")
 plt.ylabel("y(t)")
 plt.show()
+
+# d)
+# Solution exact
+def y(t):
+    return np.exp(t) * np.sin(t)
+
+N = [2**6, 2**7, 2**8, 2**9, 2**10] 
+
+erreur = []
+h = []
+
+for i in N:
+    coef = splines_edo_implicite(np.sqrt(2)/2 * np.exp(np.pi/4), np.sqrt(2) * np.exp(np.pi/4), f, np.pi/4, 3, i)
+    hi = (3 - np.pi/4)/i
+    h.append(hi)
+    t_int = np.linspace(np.pi/4, 3, i+1)
+    erreur_max = 0
+
+    for j in range(i):
+        ti = t_int[j]
+        ai, bi, ci, di = coef[j]
+        S_ti = ai*ti**3 + bi*ti**2 + ci*ti + di
+        erre = abs(y(ti) - S_ti)
+
+        if erre > erreur_max:
+            erreur_max = erre
+    tN = t_int[-1]
+    aN, bN, cN, dN = coef[-1]
+    S_tN = aN*tN**3 + bN*tN**2 + cN*tN + dN
+    erreur_max = max(erreur_max, abs(y(tN) - S_tN))
+
+    erreur.append(erreur_max)
+
+plt.figure()
+plt.loglog(h, erreur)
+plt.title('Erreur global en fonction de h (en log)')
+plt.xlabel("h")
+plt.ylabel("E(h)")
+plt.show()
