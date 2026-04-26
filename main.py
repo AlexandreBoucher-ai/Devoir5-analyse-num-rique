@@ -42,7 +42,6 @@ N = [2**6, 2**7, 2**8, 2**9, 2**10]
 
 erreur = []
 h = []
-
 for i in N:
     coef = splines_edo_implicite(np.sqrt(2)/2 * np.exp(np.pi/4), np.sqrt(2) * np.exp(np.pi/4), f, np.pi/4, 3, i)
     hi = (3 - np.pi/4)/i
@@ -73,13 +72,13 @@ plt.ylabel("E(h)")
 plt.show()
 
 # i)
-
 def F(t, Y):
     y1, y2 = Y
     dy1 = y2
     dy2 = (2*np.exp(-t)/np.sin(t))*y1*y2 - 2*np.exp(t)*np.sin(t)
     return np.array([dy1, dy2])
 
+coef = splines_edo_implicite(np.sqrt(2)/2 * np.exp(np.pi/4), np.sqrt(2) * np.exp(np.pi/4), f, np.pi/4, 3, 16)
 trk4, yrk4 = rk4(F, np.pi/4, 3, [np.sqrt(2)/2*np.exp(np.pi/4), np.sqrt(2)*np.exp(np.pi/4)], (3-np.pi/4)/16)
 
 def yexact(t):
@@ -91,6 +90,7 @@ def S(t):
     i = min(int((t - np.pi/4)/h), 15)
     a, b, c, d = coef[i]
     return a*t**3 + b*t**2 + c*t + d
+
 t_int = np.linspace(np.pi/4, 3, 16*20)
 S_pasfonction2 = np.array([S(t) for t in t_int])
 yep = yexact(t_int)
@@ -99,9 +99,9 @@ yrk4p = yrk4[0]
 trk4p = trk4
 
 plt.figure()
-plt.plot(t_int, yep, 'o-', label = 'Solution exact')
-plt.plot(t_int, S_pasfonction2, label= 'Spline cubique')
-plt.plot(trk4p, yrk4p, label = 'RK4')
+plt.plot(t_int, yep, label='Solution exact')
+plt.plot(t_int, S_pasfonction2, label='Spline cubique')
+plt.plot(trk4p, yrk4p, 'o-', label='RK4')
 plt.legend()
 plt.title('Exact vs Spline vs RK4')
 plt.xlabel("t")
